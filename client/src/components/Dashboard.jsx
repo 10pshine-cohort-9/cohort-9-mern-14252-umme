@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { notesApi } from '../services/api';
 import NoteCard from './NoteCard';
 import NoteEditor from './NoteEditor';
@@ -10,17 +10,28 @@ const Dashboard = () => {
   const [search, setSearch] = useState('');
   const [editingNote, setEditingNote] = useState(null); // null = closed, {} = new note
   const [saving, setSaving] = useState(false);
+  const latestRequest = useRef(0);
 
   const fetchNotes = useCallback(async (query) => {
+    const requestId = ++latestRequest.current;
+
     setLoading(true);
     setError(null);
+
     try {
       const { data } = await notesApi.list(query);
+
+      if (requestId !== latestRequest.current) return;
+
       setNotes(data.data.notes);
     } catch (err) {
+      if (requestId !== latestRequest.current) return;
+
       setError('Could not load your notes. Please try again.');
     } finally {
-      setLoading(false);
+      if (requestId === latestRequest.current) {
+        setLoading(false);
+      }
     }
   }, []);
 
@@ -47,7 +58,7 @@ const Dashboard = () => {
   };
 
   const handleDelete = async (note) => {
-    if (!window.confirm(`Delete "${note.title}"? This cannot be undone.`)) return;
+    if (!window.confirm(Delete "${note.title}"? This cannot be undone.)) return;
     try {
       await notesApi.remove(note.id);
       setNotes((prev) => prev.filter((n) => n.id !== note.id));
