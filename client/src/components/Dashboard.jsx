@@ -58,7 +58,7 @@ const Dashboard = () => {
   };
 
   const handleDelete = async (note) => {
-    if (!window.confirm(Delete "${note.title}"? This cannot be undone.)) return;
+    if (!window.confirm(`Delete "${note.title}"? This cannot be undone.`)) return;
     try {
       await notesApi.remove(note.id);
       setNotes((prev) => prev.filter((n) => n.id !== note.id));
