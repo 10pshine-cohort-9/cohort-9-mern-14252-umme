@@ -62,6 +62,7 @@ const Dashboard = () => {
     try {
       await notesApi.remove(note.id);
       setNotes((prev) => prev.filter((n) => n.id !== note.id));
+      fetchNotes(search);
     } catch (err) {
       setError('Could not delete the note. Please try again.');
     }
@@ -73,6 +74,7 @@ const Dashboard = () => {
       setNotes((prev) =>
         prev.map((n) => (n.id === note.id ? data.data.note : n)).sort((a, b) => b.pinned - a.pinned)
       );
+      fetchNotes(search);
     } catch (err) {
       setError('Could not update the note. Please try again.');
     }
