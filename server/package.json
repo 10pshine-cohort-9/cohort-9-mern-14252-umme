@@ -1,0 +1,41 @@
+{
+  "name": "notes-app-server",
+  "version": "1.0.0",
+  "description": "Notes App backend - Node.js, Express, MongoDB (Mongoose), JWT auth, Pino logging",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "cross-env NODE_ENV=test mocha test/**/*.test.js --timeout 20000 --exit",
+    "test:coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha test/**/*.test.js --timeout 20000 --exit",
+    "lint": "eslint src --ext .js",
+    "sonar": "sonar-scanner"
+  },
+  "keywords": ["mern", "notes", "express", "mongodb", "mongoose", "jwt"],
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.4",
+    "pino": "^9.2.0",
+    "pino-http": "^10.1.0",
+    "pino-pretty": "^11.2.1",
+    "express-validator": "^7.1.0",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "mocha": "^10.4.0",
+    "chai": "^4.4.1",
+    "chai-http": "^4.4.0",
+    "sinon": "^18.0.0",
+    "cross-env": "^7.0.3",
+    "nyc": "^17.0.0",
+    "eslint": "^8.57.0",
+    "mongodb-memory-server": "^9.4.0"
+  }
+}
