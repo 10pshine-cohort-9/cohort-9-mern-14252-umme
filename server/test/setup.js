@@ -6,19 +6,23 @@ const { mongoose, User, Note } = require('../src/models');
 
 let mongod;
 
-before(async function beforeAll() {
-  this.timeout(30000); // first boot downloads a local MongoDB binary
-  mongod = await MongoMemoryServer.create();
-  await mongoose.connect(mongod.getUri());
-});
+module.exports = {
+  mochaHooks: {
+    async beforeAll() {
+      this.timeout(30000);
+      mongod = await MongoMemoryServer.create();
+      await mongoose.connect(mongod.getUri());
+    },
 
-afterEach(async () => {
-  // Keep tests isolated from one another
-  await Note.deleteMany({});
-  await User.deleteMany({});
-});
+    async afterEach() {
+      // Keep tests isolated from one another
+      await Note.deleteMany({});
+      await User.deleteMany({});
+    },
 
-after(async () => {
-  await mongoose.disconnect();
-  if (mongod) await mongod.stop();
-});
+    async afterAll() {
+      await mongoose.disconnect();
+      if (mongod) await mongod.stop();
+    },
+  },
+};

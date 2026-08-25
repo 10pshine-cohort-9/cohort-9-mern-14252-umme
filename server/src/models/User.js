@@ -21,11 +21,15 @@ const userSchema = new Schema(
       match: [/^\S+@\S+\.\S+$/, 'A valid email is required'],
     },
     password: {
-      type: String,
-      required: [true, 'Password is required'],
-      minlength: 6,
-      select: false, // never returned by default; opt in with .select('+password')
-    },
+  type: String,
+  required: [true, 'Password is required'],
+  minlength: 6,
+  validate: {
+    validator: (value) => Buffer.byteLength(value, 'utf8') <= 72,
+    message: 'Password must be at most 72 bytes',
+  },
+  select: false, // never returned by default; opt in with .select('+password')
+},
   },
   {
     timestamps: true,
